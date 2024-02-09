@@ -12,6 +12,8 @@ class AuthController extends Controller
     // register 
     public function register(Request $request)
     {
+
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -72,11 +74,12 @@ class AuthController extends Controller
         );
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $user = Auth::user();
 
         $request->validate([
-            'name' =>'required|string',
+            'name' => 'required|string',
         ]);
 
         $image = $this->saveImage($request->image, 'profiles');

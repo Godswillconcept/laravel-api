@@ -55,14 +55,14 @@ return [
             'visibility' => 'public',
         ],
 
-        'public' => [
+        'posts' => [
             'driver' => 'local',
             'root' => storage_path('app/public/posts'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
-        'public' => [
+        'profiles' => [
             'driver' => 'local',
             'root' => storage_path('app/public/profiles'),
             'url' => env('APP_URL').'/storage',
