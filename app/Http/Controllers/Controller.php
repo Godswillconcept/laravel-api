@@ -18,9 +18,13 @@ class Controller extends BaseController
         if (!$image) {
             return null;
         }
-        $fileName = time() . '.' . $image->getClientOriginalExtension();
-        Storage::disk($path)->put($fileName, base64_decode($image));
 
-        return URL::to('/') . '/storage' . $path . '/' . $fileName;
+        $currentTimestamp = microtime(true);
+        $ext = $image->getClientOriginalExtension();
+        $file_name = "$currentTimestamp.$ext";
+
+        $path = $image->storeAs($path, $file_name, 'public');
+
+        return 'storage/' . $path;
     }
 }

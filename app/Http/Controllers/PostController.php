@@ -27,11 +27,14 @@ class PostController extends Controller
             'body' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Add validation for image file
         ]);
-
+        
         if ($request->hasFile('image')) {
-            $image = $this->saveImage($request->image, 'posts');
+            $src = $request->file('image');
+            $path = 'posts'; // 
+            $image = $this->saveImage($src, $path);
         }
-
+        
+        dd($request->all());
         $post = Post::create([
             'title' => $request->title,
             'body' => $request->body,
@@ -39,7 +42,7 @@ class PostController extends Controller
             'image' => $request->hasFile('image') ? $image : null,
             'slug' => Str::slug($request->title),
         ]);
-
+        
         return response([
             'message' => 'Post created successfully',
             'post' => $post
@@ -80,7 +83,10 @@ class PostController extends Controller
         }
 
         if ($request->hasFile('image')) {
-          $image = $this->saveImage($request->image, 'posts');
+            $src = $request->file('image');
+            $path = 'posts'; // 
+
+            $image = $this->saveImage($src, $path);
 
             // Delete old image if it exists
             if ($post->image && Storage::disk('public')->exists($post->image)) {

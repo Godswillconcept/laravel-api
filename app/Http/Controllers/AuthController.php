@@ -12,18 +12,24 @@ class AuthController extends Controller
     // register 
     public function register(Request $request)
     {
-
-
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
 
+        if ($request->hasFile('image')) {
+            $src = $request->file('image');
+            $path = 'profiles'; // 
+
+            $image = $this->saveImage($src, $path);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'image' => $request->hasFile('image') ? $image : null
         ]);
 
         return response([
@@ -35,6 +41,7 @@ class AuthController extends Controller
     // login 
     public function login(Request $request)
     {
+        
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
